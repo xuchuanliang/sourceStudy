@@ -1,0 +1,3 @@
+- BeanFactory是管理Bean的顶级接口，定义了我们向容器中获取Bean的方法；
+BeanDefinitionRegistry是管理BeanDefinition的顶级接口，定义了向容器中增加、删除BeanDefinition的接口；
+可以理解BeanFactory是提供给用户使用，BeanDefinitionRegistry是提供给应用程序管理Bean注册信息的接口

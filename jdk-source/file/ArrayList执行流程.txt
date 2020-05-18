@@ -1,0 +1,22 @@
+ArrayList arrayList = new ArrayList();
+    -->java.util.ArrayList.ArrayList() : 将java.util.ArrayList.elementData赋值为空数组，即java.util.ArrayList.DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+arrayList.add("ss");
+    -->java.util.ArrayList.add(E)
+        -->java.util.ArrayList.ensureCapacityInternal(size+1即0+1)：
+            -->java.util.ArrayList.ensureExplicitCapacity(calculateCapacity(elementData, minCapacity))：elementData此时默认是DEFAULTCAPACITY_EMPTY_ELEMENTDATA，minCapacity是1
+                -->java.util.ArrayList.calculateCapacity()：此时由于elementData是DEFAULTCAPACITY_EMPTY_ELEMENTDATA，minCapacity是1，则通过Math.max(DEFAULT_CAPACITY, minCapacity)，返回DEFAULT_CAPACITY，即默认大小是10
+                -->java.util.ArrayList.ensureExplicitCapacity(int minCapacity即为10)：此时通过minCapacity - elementData.length > 0，即10-0>0，则调用grow()方法
+                    -->java.util.ArrayList.grow(10)：该方法用于扩充ArrayList中的数组，10是期望扩充的最小容量
+                        -->grow()方法的内部逻辑：
+                        -->int oldCapacity = elementData.length;：获取当前list中数组的长度，此时由于elementData是DEFAULTCAPACITY_EMPTY_ELEMENTDATA，所以当前list中数组大小为10
+                        -->int newCapacity = oldCapacity + (oldCapacity >> 1);：newCapacity的大小约定于原数组大小的1.5倍，由于此时oldCapacity，所以此时newCapacity也为0
+                        -->if (newCapacity - minCapacity < 0) {newCapacity = minCapacity;}：如果原数组大小的1.5倍小于参数中期望扩充的最小容量，则newCapacity重新赋值为期望扩充的最小容量(minCapacity)，此时newCapacity=10
+                        -->if (newCapacity - MAX_ARRAY_SIZE > 0){newCapacity = hugeCapacity(minCapacity);}；MAX_ARRAY_SIZE=Integer.MAX_VALUE - 8；此时的minCapacity是1，所以跳过
+                            //java doc：The maximum size of array to allocate.Some VMs reserve some header words in an array.
+                            //Attempts to allocate larger arrays may result in OutOfMemoryError: Requested array size exceeds VM limit
+                            //意思是：数组最大容量，一些JVM当数组超过该值时会报OOM异常
+                            -->MAX_ARRAY_SIZE=Integer.MAX_VALUE - 8
+                        -->java.util.ArrayList.hugeCapacity(int minCapacity)，该逻辑主要是：(minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
+                        -->elementData = Arrays.copyOf(elementData, newCapacity);将elementData中的元素拷贝到一个长度为newCapacity的新数组中
+        -->elementData[size++] = e; 将新的元素赋值到数组的非空元素最后
+        -->return true;
