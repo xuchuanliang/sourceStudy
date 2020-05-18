@@ -1,0 +1,125 @@
+zookeeper源码执行流程分析
+1.主流程
+    >org.apache.zookeeper.server.quorum.QuorumPeerMain.main zookeeper入口方法
+        >org.apache.zookeeper.server.quorum.QuorumPeerMain.initializeAndRun 初始化zookeeper并且运行
+            >org.apache.zookeeper.server.quorum.QuorumPeerConfig.parse 解析zoo.cfg，将zookeeper的配置映射为org.apache.zookeeper.server.quorum.QuorumPeerConfig中的属性
+                >org.apache.zookeeper.server.quorum.QuorumPeerConfig.parseProperties
+            >org.apache.zookeeper.server.quorum.QuorumPeerMain.runFromConfig 运行集群模式
+            >org.apache.zookeeper.server.ZooKeeperServerMain.main 运行单例模式
+
+1.1运行集群模式流程
+>org.apache.zookeeper.server.quorum.QuorumPeerMain.runFromConfig 运行集群模式
+    # 默认创建一个org.apache.zookeeper.server.NIOServerCnxnFactory，创建一个java NIO工厂，继承Runnable；也可以通过配置创建org.apache.zookeeper.server.NettyServerCnxnFactory
+    >org.apache.zookeeper.server.ServerCnxnFactory.createFactory()
+
+    # 创建一个法定人数（QuorumPeer)，QuorumPeer中包含配置文件中的信息，该类继承Thread；
+    #
+    # 该类的英文doc如下：
+    # This class manages the quorum protocol. There are three states this server can be in:--翻译：这个类管理法定人数协议。服务可能存在三种状态
+    # Leader election - each server will elect a leader (proposing itself as a leader initially) --翻译：leader选举 - 每一个服务回选举一个leader（首先会选举自己）
+    # Follower - the server will synchronize with the leader and replicate any transactions -- 翻译：follower - follow会与leader同步，并且会复制leader所有的事务
+    # Leader - the server will process requests and forward them to followers.A majority of followers must log the request before it can be accepted. -- 翻译：leader - leader会处理请求并且转发给follower。每一个follower在接收leader的请求前必须日志记录下该请求
+    # This class will setup a datagram socket that will always respond with its view of the current leader. The response will take the form of: -- 翻译：这个类会建立一个socket套接字用于及时响应leader。响应内容将包含以下内容：
+    # int xid; long myid; long leader_id; long leader_zxid;
+    # The request for the current leader will consist solely of an xid: int xid; -- 翻译：当前leader的请求将只包含xid
+    >org.apache.zookeeper.server.quorum.QuorumPeerMain.getQuorumPeer
+    >org.apache.zookeeper.server.quorum.QuorumPeer.start #启动QuorumPeer
+        >org.apache.zookeeper.server.quorum.QuorumPeer.loadDataBase #加载数据
+        >org.apache.zookeeper.server.ServerCnxnFactory.start    #实际上是运行org.apache.zookeeper.server.NIOServerCnxnFactory.start方法
+            >org.apache.zookeeper.server.NIOServerCnxnFactory.run #运行
+        >org.apache.zookeeper.server.quorum.QuorumPeer.startLeaderElection #开始选举
+        >org.apache.zookeeper.server.quorum.QuorumPeer.run #
+
+1.1.1 加载数据
+>org.apache.zookeeper.server.quorum.QuorumPeer.loadDataBase #加载数据
+        # 委托给ZKDatabase加载数据，ZKDatabase实际上是zookeeper存储节点数据的一个内存数据库，实际上数据是存储在org.apache.zookeeper.server.DataTree类中
+        # ZKDatabase的doc文档如下：
+        # This class maintains the in memory database of zookeeper server states that includes the sessions, - 翻译：这个类管理zookeeper状态的内存数据库，包含session、datatree、committed logs
+        # datatree and the committed logs.
+        # It is booted up  after reading the logs and snapshots from the disk. - 翻译：在读取完硬盘中的日志和快照文件后启动
+        # loadDataBase()方法的doc文档如下：
+        # load the database from the disk onto memory and also add the transactions to the committedlog in memory. - 翻译：从硬盘中加载数据，同时将事务添加到提交内存的提交日志中
+       >org.apache.zookeeper.server.ZKDatabase.loadDataBase
+            # restore()方法的doc文档如下：
+            # this function restores the server database after reading from the snapshots and transaction logs.- 翻译：这个函数在读取快照和事务日志后恢复服务器内存数据库
+            >org.apache.zookeeper.server.persistence.FileTxnSnapLog.restore
+                #deserialize()doc文档如下：
+                #deserialize a data tree from the most recent snapshot - 翻译：从最近的快照中反序列化一个数据树（data tree）
+                >org.apache.zookeeper.server.persistence.FileSnap.deserialize
+                    >org.apache.zookeeper.server.persistence.FileSnap.deserialize
+                        >org.apache.zookeeper.server.util.SerializeUtils.deserializeSnapshot
+                            # 将数据解析到DataTree中
+                            # dataTree的doc文档如下：
+                            # This class maintains the tree data structure. - 翻译：这个类维护者一个树形数据结构
+                            # It doesn't have any networking or client connection code in it so that it can be tested in a stand alone way. - 翻译：这个类不包含任何网络或客户端连接代码，以便于可以以一种独立的方式被测试
+                            # The tree maintains two parallel data structures: a hashtable that maps from full paths to DataNodes and a tree of DataNodes. - 翻译：这个树管理两个平行的数据结构：一个hashtable映射全局路径以及对应该路径的DataNodes，一个树形的dataNodes
+                            # All accesses to a path is through the hashtable. The tree is traversed only when serializing to disk. - 翻译：所有访问path均通过这个hashtable。这个树会被序列化到硬盘上
+                                # DataTree存储节点的两个hashtable：
+                                # nodes的doc:his hashtable provides a fast lookup to the datanodes. The tree is the source of truth and is where all the locking occurs
+                                # ConcurrentHashMap<String, DataNode> nodes
+                                #
+                                # ephemerals的doc This hashtable lists the paths of the ephemeral nodes of a session.
+                                # Map<Long, HashSet<String>> ephemerals
+                            >org.apache.zookeeper.server.DataTree.deserialize
+
+1.1.2 运行ServerCnxnFactory.start；通过我们前面得知实际上不指定则默认zookeeper使用的是NIOServerCnxnFactory实现类，我们通过查看该类的源代码可以得知使用的是java nio进行操作，
+该类中默认为维护一个线程，在org.apache.zookeeper.server.NIOServerCnxnFactory.configure方法中进行赋值，实际使用的是org.apache.zookeeper.server.ZooKeeperThread，并以守护线程的方式运行
+>org.apache.zookeeper.server.ServerCnxnFactory.start    #实际上是运行org.apache.zookeeper.server.NIOServerCnxnFactory.start方法，在该类中启动该类的Thread，即调用该类的Thread.start方法，实际上该线程启动后调用的是本类的run方法
+    >org.apache.zookeeper.server.NIOServerCnxnFactory.run # 执行线程run方法
+        >org.apache.zookeeper.server.NIOServerCnxn.doIO # 处理读或写事件
+            >org.apache.zookeeper.server.NIOServerCnxn.readPayload # 当时读事件时，读取数据
+                >org.apache.zookeeper.server.NIOServerCnxn.readConnectRequest 读取建立连接的请求
+                   >org.apache.zookeeper.server.ZooKeeperServer.processConnectRequest 解析建立连接的读请求，包含建立和保存session信息
+                        >org.apache.zookeeper.server.ZooKeeperServer.reopenSession 重新打开session
+                        >org.apache.zookeeper.server.ZooKeeperServer.createSession 创建session
+                >org.apache.zookeeper.server.NIOServerCnxn.readRequest 读取正常请求
+                    >org.apache.zookeeper.server.ZooKeeperServer.processPacket 解析请求包
+
+1.1.3 开始选举，确定选举算法
+>org.apache.zookeeper.server.quorum.QuorumPeer.startLeaderElection #开始选举
+    >org.apache.zookeeper.server.quorum.QuorumPeer.getLastLoggedZxid 获取日志记录的最后的zxid
+    >org.apache.zookeeper.server.quorum.QuorumPeer.getCurrentEpoch 获取当前的纪元（epoch）
+    >currentVote = new Vote(myid, getLastLoggedZxid(), getCurrentEpoch()); 创建选票，其中currentVote的doc如下：This is who I think the leader currently is.表示当前需要选举的leader
+    >org.apache.zookeeper.server.quorum.QuorumPeer.createElectionAlgorithm 选择选举算法，有LeaderElection、AuthFastLeaderElection、FastLeaderElection三种选举算法，其中前两种都标记过期，不推荐使用，默认使用FastLeaderElection这种选举算法
+
+1.1.4
+>org.apache.zookeeper.server.quorum.QuorumPeer.run 真正开始选举，选举业务逻辑在run方法中
+    >case LOOKING: # 当时LOOKING状态
+        # 选择leader过程 doc如下：
+        # Starts a new round of leader election. - 翻译：开启新一轮的选举
+        # Whenever our QuorumPeer changes its state to LOOKING, this method is invoked, - 翻译：无论何时，我们的法人状态转变成为LOOKING状态，这个方法就会被调用
+        # and it sends notifications to all other peers. - 翻译：并且发送通知到其他法人
+        >org.apache.zookeeper.server.quorum.FastLeaderElection.lookForLeader
+    >case OBSERVING: 当时OBSERVING状态
+        # 跟随leader，doc如下：
+        # the main method called by the observer to observe the leader - 翻译：当observer跟随leader(observe the leader),这个方法将会被调用
+        >org.apache.zookeeper.server.quorum.Observer.observeLeader # 跟随leader
+            >org.apache.zookeeper.server.quorum.Learner.findLeader 查找leader地址
+            # doc如下：
+            # Establish a connection with the Leader found by findLeader. Retries 5 times before giving up.- 翻译：于findLeader()方法查询到的leader建立连接，若未连接上会进行5次重试
+            >org.apache.zookeeper.server.quorum.Learner.connectToLeader 连接leader
+            # 建立完连接后，注册到leader中，doc如下：
+            # Once connected to the leader, perform the handshake protocol to establish a following / observing connection. - 翻译：一旦与leader建立连接，执行握手协议，建立一个following/observing连接
+            >org.apache.zookeeper.server.quorum.Learner.registerWithLeader
+            # 同步leader信息，doc：
+            # Finally, synchronize our history with the Leader. 最后同步leader信息
+            >org.apache.zookeeper.server.quorum.Learner.syncWithLeader
+    case FOLLOWING: # 当时FOLLOWING状态
+        # doc如下
+        # the main method called by the follower to follow the leader - 翻译：follower跟随leader的被调用的主方法
+        >org.apache.zookeeper.server.quorum.Follower.followLeader
+            >org.apache.zookeeper.server.quorum.Learner.findLeader 查找leader地址(参见上方OBSERVING状态中说明)
+            >org.apache.zookeeper.server.quorum.Learner.connectToLeader 连接leader(参见上方OBSERVING状态中说明)
+            >org.apache.zookeeper.server.quorum.Learner.registerWithLeader 建立完连接后，注册到leader中(参见上方OBSERVING状态中说明)
+            >org.apache.zookeeper.server.quorum.Learner.syncWithLeader 同步leader信息(参见上方OBSERVING状态中说明)
+    case LEADING: # 当时LEADING状态是
+        >org.apache.zookeeper.server.quorum.QuorumPeer.setLeader 设置leader
+        # doc如下：
+        # This method is main function that is called to lead 被选举称为leader后需要调用的主方法
+        >org.apache.zookeeper.server.quorum.Leader.lead
+            >org.apache.zookeeper.server.ZooKeeperServer.loadData 加载数据
+            # 开始运行leaderServer，doc如下：
+            # Start up Leader ZooKeeper server and initialize zxid to the new epoch - 翻译：启动leader Server，使用一个新的epoch初始化一个zxid，实际上一代leader都有一个独一无二的epoch，代表一个朝代
+            >org.apache.zookeeper.server.quorum.Leader.startZkServer
+
+通过查看org.apache.zookeeper.server.quorum.QuorumPeer源码，我们可以得知zookeeper选举过程中状态分为四种：LOOKING, FOLLOWING, LEADING, OBSERVING;
