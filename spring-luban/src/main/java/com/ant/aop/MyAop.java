@@ -5,13 +5,16 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
  * 定义切面
  */
 @Component
-@Aspect
+@Scope("prototype")
+@Aspect()
+//@Aspect("perthis(this(com.ant.aop.MyServiceInterface))")
 public class MyAop {
 
     /**
@@ -40,9 +43,9 @@ public class MyAop {
     @Around("jointPointExecution()")
     public void advice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         System.out.println("before");
-        System.out.println(proceedingJoinPoint);
         proceedingJoinPoint.proceed();
         System.out.println("after");
+        System.out.println(this.hashCode());
     }
 
 

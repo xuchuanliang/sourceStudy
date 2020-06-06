@@ -12,8 +12,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(Config.class);
         MyServiceInterface bean = annotationConfigApplicationContext.getBean(MyServiceInterface.class);
-        bean.test("21");
+        MyServiceInterface bea1 = annotationConfigApplicationContext.getBean(MyServiceInterface.class);
+//        bean.test("21");
         bean.test();
+        bean.test("haha");
+//        bea1.test();
 //        byte[] myServices = ProxyGenerator.generateProxyClass("MyService", new Class[]{TestMain.class});
 //        FileOutputStream fileOutputStream = new FileOutputStream("D:\\MyService.class");
 //        fileOutputStream.write(myServices);
