@@ -12,7 +12,7 @@
         <module>spring-source</module>
         <module>jdk-source</module>
         <module>zookeeper-source</module>
-        <module>spring-ioc</module>
+        <module>spring-luban</module>
         <module>spring-website</module>
     </modules>
     <packaging>pom</packaging>
@@ -29,6 +29,12 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <scope>runtime</scope>
             </dependency>
+            <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-indexer</artifactId>
+            <version>5.2.6.RELEASE</version>
+            <optional>true</optional>
+        </dependency>
         </dependencies>
     </dependencyManagement>
 

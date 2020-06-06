@@ -1,4 +1,4 @@
-package com.ant;
+package com.ant.test1;
 
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;

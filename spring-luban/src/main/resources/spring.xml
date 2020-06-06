@@ -5,11 +5,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="byName">
+    <context:annotation-config></context:annotation-config>
 
-    <bean class="com.ant.IndexDaoImpl" id="indexDao"></bean>
+<!--    <bean class="com.ant.test1.IndexDaoImpl" id="indexDao"></bean>-->
 
-    <bean class="com.ant.IndexDaoImpl1" id="ant"></bean>
+<!--    <bean class="com.ant.test1.IndexDaoImpl1" id="ant"></bean>-->
 
-    <bean class="com.ant.IndexService" id="indexService"></bean>
+<!--    <bean class="com.ant.test1.IndexService" id="indexService"></bean>-->
+
+<!--    <bean class="com.ant.lifeCallback.LifeServiceImpl" id="lifeService"></bean>-->
 
 </beans>
