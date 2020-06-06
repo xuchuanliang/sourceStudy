@@ -13,6 +13,7 @@
         <module>jdk-source</module>
         <module>zookeeper-source</module>
         <module>spring-ioc</module>
+        <module>spring-website</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -7,25 +7,18 @@
         <groupId>com.ant</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <description>spring 官方网站学习</description>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-ioc</artifactId>
+    <artifactId>spring-website</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.2.6.RELEASE</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.3.7</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.5</version>
-        </dependency>
-
-
     </dependencies>
+
 
 </project>

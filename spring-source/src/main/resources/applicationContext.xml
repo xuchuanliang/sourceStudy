@@ -3,13 +3,24 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="staff" class="com.ant.entity.Staff">
-        <constructor-arg name="id" value="uuid"></constructor-arg>
-        <constructor-arg name="name" value="ant"></constructor-arg>
+<!--    <bean id="staff" class="com.ant.entity.Staff">-->
+<!--        <constructor-arg name="id" value="uuid"></constructor-arg>-->
+<!--        <constructor-arg name="name" value="ant"></constructor-arg>-->
+<!--    </bean>-->
+<!--    <bean id="company" class="com.ant.entity.Company">-->
+<!--        <property name="staff" ref="staff"></property>-->
+<!--    </bean>-->
+<!--    <bean id="myListener" class="com.ant.test.MyListener"></bean>-->
+<!--    <bean id="test" class="com.ant.entity.TestFactoryBean"></bean>-->
+
+<!--    <bean id="entity" class="com.website.Entity"></bean>-->
+<!--    <alias name="entity" alias="entity2"></alias>-->
+<!--    <alias name="entity" alias="entity3"></alias>-->
+<!--    <bean id="entity" class="com.website.EntityFactory" factory-method="instance"></bean>-->
+    <bean class="com.website.ThingsOne" id="thingsOne">
+        <property name="thingsTwo" ref="thingsTwo"></property>
+        <property name="thingsThree" ref="thingsThree"></property>
     </bean>
-    <bean id="company" class="com.ant.entity.Company">
-        <property name="staff" ref="staff"></property>
-    </bean>
-    <bean id="myListener" class="com.ant.test.MyListener"></bean>
-    <bean id="test" class="com.ant.entity.TestFactoryBean"></bean>
+    <bean class="com.website.ThingsTwo" id="thingsTwo"></bean>
+    <bean class="com.website.ThingsThree" id="thingsThree"></bean>
 </beans>
