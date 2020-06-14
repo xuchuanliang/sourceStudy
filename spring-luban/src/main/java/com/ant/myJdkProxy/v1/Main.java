@@ -1,4 +1,6 @@
-package com.ant.myJdkProxy;
+package com.ant.myJdkProxy.v1;
+
+import java.lang.reflect.Proxy;
 
 /**
  * 测试主函数

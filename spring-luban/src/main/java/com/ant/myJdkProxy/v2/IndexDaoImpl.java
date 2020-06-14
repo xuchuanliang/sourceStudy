@@ -1,9 +1,9 @@
-package com.ant.myJdkProxy;
+package com.ant.myJdkProxy.v2;
 
 /**
  * 接口实现类
  */
-public class IndexDaoImpl implements IndexDao{
+public class IndexDaoImpl implements IndexDao {
     @Override
     public void test() {
         System.out.println("test()");

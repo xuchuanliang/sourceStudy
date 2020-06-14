@@ -1,7 +1,6 @@
-package com.ant.myJdkProxy;
+package com.ant.myJdkProxy.v1;
 
 import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.File;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -38,33 +38,11 @@ public class ProxyUtil {
         //1.生成java源代码字符串
         StringBuilder sb = genJavaStr(target,interfc);
         //2.将源代码写成$Proxy.java至D:/com/ant下
-        File dir = new File("D:\\com\\ant");
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
-        File file = new File("D:\\com\\ant\\$Proxy.java");
-        if(!file.exists()){
-            file.createNewFile();
-        }
-
-        FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write(sb.toString());
-        fileWriter.flush();
-        fileWriter.close();
-
+        File file = createJavaFile(sb.toString());
         //3.将$Proxy.java动态编译成字节码
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);
-        Iterable units = fileMgr.getJavaFileObjects(file);
-        JavaCompiler.CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);
-        t.call();
-        fileMgr.close();
-
+        compile(file);
         //4.将class文件动态加载到jvm虚拟机内存中
-        URL[] urls = new URL[]{new URL("file:D:\\\\")};
-        URLClassLoader urlClassLoader = new URLClassLoader(urls);
-        Class<?> clazz = urlClassLoader.loadClass("com.ant.$Proxy");
-
+        Class clazz = loadClass();
         //5.反射创建代理对象
         Constructor<?> constructor = clazz.getConstructor(target.getClass());
         return constructor.newInstance(target);
@@ -144,5 +122,53 @@ public class ProxyUtil {
         }
         sb.append(line).append("}");
         return sb;
+    }
+
+    /**
+     * 根据源代码，创建java文件
+     * @param sourceCode
+     * @return
+     * @throws IOException
+     */
+    private static File createJavaFile(String sourceCode) throws IOException {
+        File dir = new File("D:\\com\\ant");
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        File file = new File("D:\\com\\ant\\$Proxy.java");
+        if(!file.exists()){
+            file.createNewFile();
+        }
+
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(sourceCode);
+        fileWriter.flush();
+        fileWriter.close();
+        return file;
+    }
+
+    /**
+     * 将源代码编译成字节码文件
+     * @param file
+     * @throws IOException
+     */
+    private static void compile(File file) throws IOException {
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);
+        Iterable units = fileMgr.getJavaFileObjects(file);
+        JavaCompiler.CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);
+        t.call();
+        fileMgr.close();
+    }
+
+    /**
+     * 动态加载class文件到jvm内存中
+     * @return
+     */
+    private static Class loadClass() throws MalformedURLException, ClassNotFoundException {
+        URL[] urls = new URL[]{new URL("file:D:\\\\")};
+        URLClassLoader urlClassLoader = new URLClassLoader(urls);
+        Class<?> clazz = urlClassLoader.loadClass("com.ant.$Proxy");
+        return clazz;
     }
 }
