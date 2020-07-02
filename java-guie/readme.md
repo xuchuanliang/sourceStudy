@@ -345,4 +345,4 @@ public class Test{
   > jdk1.8的具体实现
   >
   > > ConcurrentHashMap取消了Segment分段锁，采⽤CAS和synchronized来保证并发安全。数据结构跟HashMap1.8的结构类似，数组+链表/红⿊⼆叉树。 Java 8在链表⻓度超过⼀定阈值（8）时将链表（寻址时间复杂度为O(N)）转换为红⿊树（寻址时间复杂度为O(log(N))）synchronized只锁定当前链表或红⿊⼆叉树的⾸节点，这样只要hash不冲突，就不会产⽣并发，效率⼜提升N倍。  
-2020年6月24日 17:48:12 58/317
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          >
