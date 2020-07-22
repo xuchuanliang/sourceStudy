@@ -14,6 +14,8 @@
         <module>zookeeper-source</module>
         <module>spring-luban</module>
         <module>spring-website</module>
+        <module>spring-log</module>
+        <module>spring-mybatis</module>
     </modules>
     <packaging>pom</packaging>
 
