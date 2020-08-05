@@ -1,4 +1,4 @@
-package thread;
+package thread.capter03;
 
 /**
  * 线程的优先级：PRIORITY

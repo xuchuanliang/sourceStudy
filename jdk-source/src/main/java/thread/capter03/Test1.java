@@ -1,4 +1,4 @@
-package thread;
+package thread.capter03;
 
 import lombok.extern.slf4j.Slf4j;
 

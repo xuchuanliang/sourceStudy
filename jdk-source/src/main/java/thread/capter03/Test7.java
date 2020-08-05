@@ -1,4 +1,4 @@
-package thread;
+package thread.capter03;
 
 /**
   线程的状态
