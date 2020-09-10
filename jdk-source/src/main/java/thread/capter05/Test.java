@@ -1,4 +1,4 @@
-package thread.sync;
+package thread.capter05;
 
 public class Test {
     /**

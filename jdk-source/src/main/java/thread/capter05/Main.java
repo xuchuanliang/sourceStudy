@@ -1,4 +1,4 @@
-package thread.sync;
+package thread.capter05;
 
 import org.openjdk.jol.info.ClassLayout;
 
