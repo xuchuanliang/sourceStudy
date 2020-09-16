@@ -52,18 +52,19 @@ public class ExerciseSell {
         return random.nextInt(5)+1;
     }
 }
-class TicketWindow{
+class TicketWindow {
+
     private int count;
 
     public TicketWindow(int count) {
         this.count = count;
     }
 
-    public int getCount(){
+    public synchronized int getCount(){
         return count;
     }
 
-    public int sell(int amount){
+    public synchronized int sell(int amount){
         if(count >= amount){
             this.count = count-amount;
             return amount;
