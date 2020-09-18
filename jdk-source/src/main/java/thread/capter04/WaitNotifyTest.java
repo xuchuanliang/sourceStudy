@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * wait和notify
  */
-public class WaitNotify1 {
-    private static Logger log = LoggerFactory.getLogger(WaitNotify1.class);
+public class WaitNotifyTest {
+    private static Logger log = LoggerFactory.getLogger(WaitNotifyTest.class);
     private static final Object LOCK = new Object();
     private static boolean hasCigarette = false;
     private static boolean hasTakeout = false;
@@ -19,7 +19,8 @@ public class WaitNotify1 {
 //        test1();
 //        test2();
 //        test3();
-        test4();
+//        test4();
+        test5();
     }
 
     /**
@@ -155,6 +156,9 @@ public class WaitNotify1 {
 
     /**
      * notifyAll
+     * 用 notifyAll 仅解决某个线程的唤醒问题，但使用 if + wait 判断仅有一次机会，一旦条件不成立，就没有重新
+     * 判断的机会了
+     * 解决方法，用 while + wait，当条件不成立，再次 wait
      */
     public static void test4(){
         Thread t1 = new Thread(()->{
@@ -200,5 +204,49 @@ public class WaitNotify1 {
         }).start();
     }
 
+    /**
+     * notify的正确用法是使用while循环来实现
+     *
+     */
+    public static void test5(){
+        Thread t1 = new Thread(()->{
+            synchronized (LOCK){
+                log.info("有烟没{}",hasCigarette);
+                while (!hasCigarette){
+                    log.info("烟还没到");
+                    Util.waitTime(LOCK,2);
+                }
+                log.info("有烟了，开始工作");
+            }
+        },"小南");
+        Thread t2 = new Thread(()->{
+            synchronized (LOCK){
+                log.info("外卖到了没{}",hasTakeout);
+                while (!hasTakeout){
+                    log.info("外卖还没到");
+                    Util.waitTime(LOCK,2);
+                }
+                log.info("外卖到了，开始工作");
+            }
+        },"小女");
+        t1.start();
+        t2.start();
+        Util.sleep(1);
+        new Thread(()->{
+            synchronized (LOCK){
+                log.info("外卖到了");
+                hasTakeout=true;
+                LOCK.notifyAll();
+            }
+        }).start();
+        Util.sleep(500,TimeUnit.MILLISECONDS);
+        new Thread(()->{
+           synchronized (LOCK){
+               log.info("烟到了");
+               hasCigarette = true;
+               LOCK.notifyAll();
+           }
+        }).start();
+    }
 
 }
