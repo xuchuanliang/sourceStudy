@@ -16,6 +16,7 @@
         <module>spring-website</module>
         <module>spring-log</module>
         <module>spring-mybatis</module>
+        <module>java-concurrent</module>
     </modules>
     <packaging>pom</packaging>
 
