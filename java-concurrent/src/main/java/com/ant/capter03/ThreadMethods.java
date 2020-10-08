@@ -13,7 +13,9 @@ public class ThreadMethods {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        testPark();
+//        testPark();
+//        testJoin();
+        testDaemon();
     }
 
     public static void test() throws InterruptedException {
@@ -63,5 +65,52 @@ public class ThreadMethods {
         for(int i=0;i<5;i++){
             
         }
+    }
+
+    public static void testJoin() throws InterruptedException {
+        Thread t1 = new Thread(()->{
+            for(int i=0;i<5;i++){
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log.error("睡眠{}次",i);
+            }
+        },"t1");
+
+        Thread t2 = new Thread(()->{
+            for(int i=0;i<3;i++){
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log.error("睡眠{}次",i);
+            }
+        },"t2");
+        t1.start();
+        t2.start();
+        log.error("调用join方法，等待t2线程");
+        t2.join();
+        log.error("等到了t2线程结束,调用join方法等待t1线程");
+        t1.join();
+        log.error("等到了t1线程，结束main");
+    }
+
+    public static void testDaemon(){
+        Thread t1 = new Thread(()->{
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                log.error("t1线程睡眠结束");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        },"t1");
+        //如果daemon为true表示t1是守护线程，则main线程执行结束后就会结束运行，不会打印出“t1线程睡眠结束”
+        //如果不设置daemon,则默认t1线程是主线程，则等main结束后1秒左右会打印出“t1线程睡眠结束”
+        t1.setDaemon(true);
+        t1.start();
+        log.error("main线程执行结束");
     }
 }
