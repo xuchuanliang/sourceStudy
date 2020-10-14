@@ -10,53 +10,53 @@ public class Counter {
     static int count = 0;
     private static Object room = new Object();
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 //        testNoSafeCount();
         testSafeCount1();
     }
 
     public static void testNoSafeCount() throws InterruptedException {
-        Thread t1 = new Thread(()->{
-            for(int i=0;i<5000;i++){
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 5000; i++) {
                 count++;
             }
-        },"t1");
-        Thread t2 = new Thread(()->{
-            for(int i=0;i<5000;i++){
+        }, "t1");
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 5000; i++) {
                 count--;
             }
-        },"t2");
+        }, "t2");
         t1.start();
         t2.start();
         t1.join();
         t2.join();
-        log.error("count的值是{}",count);
+        log.error("count的值是{}", count);
     }
 
-    private static void testJavap(){
+    private static void testJavap() {
         count++;
     }
 
     public static void testSafeCount1() throws InterruptedException {
-        Thread t1 = new Thread(()->{
-            for(int i=0;i<5000;i++){
-                synchronized (room){
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 5000; i++) {
+                synchronized (room) {
                     count++;
                 }
             }
-        },"t1");
-        Thread t2 = new Thread(()->{
-            for(int i=0;i<5000;i++){
-                synchronized (room){
+        }, "t1");
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 5000; i++) {
+                synchronized (room) {
                     count--;
                 }
             }
-        },"t2");
+        }, "t2");
         t1.start();
         t2.start();
         t1.join();
         t2.join();
-        log.error("count的值是{}",count);
+        log.error("count的值是{}", count);
     }
 
 
