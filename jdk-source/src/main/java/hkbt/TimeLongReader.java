@@ -19,16 +19,9 @@ public class TimeLongReader {
     }
 
     public static void analyse(){
-        String resultDir = "D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs";
+        String resultDir = "C:\\Users\\xuchuanliangbt\\Desktop\\hikiom_log";
         try {
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\alarm");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\approval");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\archives");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\exam");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\log");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\message");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\portal");
-            doRead("D:\\徐传良的文件\\海康保泰\\省厅保安系统\\1014\\log\\logs\\report");
+            doRead(resultDir);
             doWrite(resultDir);
         } catch (IOException e) {
             e.printStackTrace();
