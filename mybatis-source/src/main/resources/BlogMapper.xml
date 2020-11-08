@@ -6,4 +6,12 @@
     <select id="selectBlog" resultType="com.hkbt.Blog">
     select * from blog where id = #{id}
   </select>
+
+    <insert id="inserBlog">
+        INSERT INTO `mybatis_source`.`blog` ( `name`) VALUES (#{name});
+    </insert>
+
+    <select id="findAll" resultType="com.hkbt.Blog">
+        select * from blog;
+    </select>
 </mapper>

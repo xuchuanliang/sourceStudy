@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) throws IOException {
@@ -16,7 +17,7 @@ public class Test {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
-        Blog blog = mapper.selectBlog(null,1);
-        System.out.println(blog);
+        List<Blog> all = mapper.findAll();
+        all.forEach(System.out::println);
     }
 }
