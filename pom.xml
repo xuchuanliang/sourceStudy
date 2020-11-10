@@ -19,6 +19,7 @@
         <module>java-concurrent</module>
         <module>springboot-web</module>
         <module>spring-mvc</module>
+        <module>leetcode</module>
     </modules>
     <packaging>pom</packaging>
 
