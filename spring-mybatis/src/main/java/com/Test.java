@@ -33,7 +33,6 @@ public class Test {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(Config.class);
         IndexMapper bean = annotationConfigApplicationContext.getBean(IndexMapper.class);
         bean.list();
-        bean.list();
     }
 
 }

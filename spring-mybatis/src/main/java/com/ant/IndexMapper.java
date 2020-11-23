@@ -9,6 +9,6 @@ import java.util.Map;
 @Mapper
 public interface IndexMapper {
 
-    @Select("select * from uc_user")
+    @Select("select * from blog")
     List<Map> list();
 }
