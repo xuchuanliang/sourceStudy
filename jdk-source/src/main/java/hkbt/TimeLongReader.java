@@ -19,7 +19,7 @@ public class TimeLongReader {
     }
 
     public static void analyse(){
-        String resultDir = "C:\\Users\\xuchuanliangbt\\Desktop\\hikiom_log";
+        String resultDir = "D:\\徐传良的文件\\海康保泰\\省厅保安系统\\0312\\logs (1)\\logs";
         try {
             doRead(resultDir);
             doWrite(resultDir);
@@ -53,7 +53,7 @@ public class TimeLongReader {
 
     public static void doWrite(String resultDir) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(resultDir+"\\"+"_result.txt"));
-        map.values().stream().sorted(Comparator.comparingInt(TimeVo::getNum)).forEach(timeVo -> {
+        map.values().stream().sorted(Comparator.comparingLong(TimeVo::getAvg)).forEach(timeVo -> {
             try {
                 bufferedWriter.write("方法名称："+timeVo.getName()+"\r\n总调用次数："
                         +timeVo.getNum()+"                 总花费时间："
