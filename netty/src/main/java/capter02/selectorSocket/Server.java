@@ -67,6 +67,7 @@ public class Server {
                         ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
                         int l = socketChannel.read(byteBuffer);
                         if (l == -1) {
+                            //如果客户端正常断开，则服务器端需要及时将这个selectionKey的监听取消，否则selection会认为这个事件一直没有被处理，不断的循环处理这个channel的事件
                             key.cancel();
                             log.debug("客户端正常断开");
                         } else {
@@ -86,6 +87,7 @@ public class Server {
                             }
                         }
                     } catch (IOException e) {
+                        //如果发生异常，则需要及时将这个selectionKey的监听取消，否则selection会认为这个事件一直没有被处理，不断的循环处理这个channel的事件
                         log.debug("客户端异常断开");
                         key.cancel();
                     }
