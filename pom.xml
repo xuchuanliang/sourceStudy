@@ -20,6 +20,7 @@
         <module>springboot-web</module>
         <module>spring-mvc</module>
         <module>leetcode</module>
+        <module>netty</module>
     </modules>
     <packaging>pom</packaging>
 
