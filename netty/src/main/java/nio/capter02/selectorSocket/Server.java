@@ -1,4 +1,4 @@
-package capter02.selectorSocket;
+package nio.capter02.selectorSocket;
 
 import lombok.extern.slf4j.Slf4j;
 

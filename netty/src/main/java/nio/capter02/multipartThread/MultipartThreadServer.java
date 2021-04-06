@@ -1,4 +1,4 @@
-package capter02.multipartThread;
+package nio.capter02.multipartThread;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,6 +9,7 @@ import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static util.ByteBufferUtil.debugAll;
 
@@ -20,7 +21,7 @@ import static util.ByteBufferUtil.debugAll;
  * 所以采用多线程的方式，一个线程以及其对应的selector单独处理accept事件，用来建立连接
  * 多个线程以及其对应的每一个selector专门用来处理read/write事件，将CPU利用起来
  * 整体架构分为boss和work两个角色
- *
+ * <p>
  * 注意：当向selector中注册channel与selector.select()获取事件两个方法不是同一个线程执行的时候，如果select()方法阻塞，则会导致注册方法也阻塞
  * 因为这中间有锁控制，所以注册操作的执行应当与select()方法的执行是统一线程执行
  */
@@ -37,16 +38,17 @@ public class MultipartThreadServer {
         //3.将channel注册到selector上，监听accept事件
         serverSocketChannel.register(acceptSelector, SelectionKey.OP_ACCEPT, null);
         //4.创建工作线程，处理读写事件，启动工作线程
-        Worker worker = new Worker("worker-0");
-        worker.start();
-        while (true){
+        int cpus = Runtime.getRuntime().availableProcessors();
+        Worker[] workers = initWorkers(cpus);
+        AtomicLong index = new AtomicLong();
+        while (true) {
             //阻塞监听连接事件
             log.debug("before accept...");
             acceptSelector.select();
             log.debug("after accept...");
             //处理建立连接的所有事件
             Iterator<SelectionKey> iterator = acceptSelector.selectedKeys().iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 SelectionKey selectionKey = iterator.next();
                 //将即将要处理的selectionKey从监听到的selectedKeys中移除出去
                 iterator.remove();
@@ -56,10 +58,24 @@ public class MultipartThreadServer {
                 socketChannel.configureBlocking(false);
                 //将socketChannel注册到Worker线程的selector中
                 log.debug("before register read event....");
-                worker.register(socketChannel,SelectionKey.OP_READ,null);
+                workers[(int) (index.getAndIncrement() % workers.length)].register(socketChannel, SelectionKey.OP_READ, null);
                 log.debug("after register read event....");
             }
         }
+    }
+
+    /**
+     * 初始化工作线程
+     * @return
+     * @throws IOException
+     */
+    private static Worker[] initWorkers(int workerNums) throws IOException {
+        Worker[] workers = new Worker[workerNums];
+        for(int i=0;i<workers.length;i++){
+            workers[i] = new Worker("worker-"+i);
+            workers[i].start();
+        }
+        return workers;
     }
 
     /**
@@ -75,29 +91,30 @@ public class MultipartThreadServer {
 
         public Worker(String name) throws IOException {
             this.name = name;
-            workThread = new Thread(this,name);
+            workThread = new Thread(this, name);
             selector = Selector.open();
         }
 
         /**
          * 启动work
          */
-        public void start(){
-            if(!started){
+        public void start() {
+            if (!started) {
                 workThread.start();
             }
         }
 
         /**
          * 由boss线程提交的向worker线程的中的selector注册channel操作
+         *
          * @param sc
          * @param ops
          * @param attach
          */
-        public void register(SocketChannel sc,int ops,Object attach){
-            tasks.add(()-> {
+        public void register(SocketChannel sc, int ops, Object attach) {
+            tasks.add(() -> {
                 try {
-                    sc.register(selector,ops,attach);
+                    sc.register(selector, ops, attach);
                 } catch (ClosedChannelException e) {
                     e.printStackTrace();
                 }
@@ -109,46 +126,46 @@ public class MultipartThreadServer {
         @Override
         public void run() {
             //工作线程开始运行
-            while (true){
+            while (true) {
                 try {
                     //阻塞直到有事件发生
                     log.debug("before read....");
                     selector.select();
                     //从队列中获取任务并执行
                     Runnable task = tasks.poll();
-                    if(null!=task){
+                    if (null != task) {
                         task.run();
                     }
                     log.debug("after read....");
                     //获取发生的事件：selectedKeys
                     Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         //获取一个发生的事件：selectionKey
                         SelectionKey selectionKey = iterator.next();
                         //在即将处理事件前，从已发生的事件中移除要处理的事件
                         iterator.remove();
                         //获取建立的连接channel
                         SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                        if(selectionKey.isReadable()){
-                            try{
+                        if (selectionKey.isReadable()) {
+                            try {
                                 //如果可读，则处理读事件
                                 ByteBuffer byteBuffer = ByteBuffer.allocate(16);
                                 int read = socketChannel.read(byteBuffer);
-                                if(read == -1){
+                                if (read == -1) {
                                     //客户端正常关闭了连接，则需要及时将这个selectionKey的监听取消
                                     log.debug("正常断开");
                                     selectionKey.cancel();
-                                }else{
+                                } else {
                                     //打印读取到的内容
                                     debugAll(byteBuffer);
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 //如果发生异常，则需要及时将这个selectionKey的监听取消，否则selection会认为这个事件一直没有被处理，不断的循环处理这个channel的事件
                                 log.debug("连接异常断开...");
                                 selectionKey.cancel();
                             }
 
-                        }else if(selectionKey.isWritable()){
+                        } else if (selectionKey.isWritable()) {
                             //如果可写，则写一各内容
                             socketChannel.write(Charset.defaultCharset().encode("你好"));
                         }
@@ -161,6 +178,7 @@ public class MultipartThreadServer {
 
         /**
          * 开放selector，提供用户向selector中注册channel
+         *
          * @return
          */
         public Selector getSelector() {

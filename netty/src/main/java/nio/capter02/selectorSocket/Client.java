@@ -1,9 +1,8 @@
-package capter02.selectorSocket;
+package nio.capter02.selectorSocket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class Client {

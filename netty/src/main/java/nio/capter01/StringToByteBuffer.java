@@ -1,4 +1,4 @@
-package capter01;
+package nio.capter01;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;

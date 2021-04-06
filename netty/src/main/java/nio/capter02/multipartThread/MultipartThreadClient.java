@@ -1,4 +1,4 @@
-package capter02.multipartThread;
+package nio.capter02.multipartThread;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

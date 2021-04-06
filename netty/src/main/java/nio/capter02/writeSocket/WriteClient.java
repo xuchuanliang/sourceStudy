@@ -1,4 +1,4 @@
-package capter02.writeSocket;
+package nio.capter02.writeSocket;
 
 import lombok.extern.slf4j.Slf4j;
 
