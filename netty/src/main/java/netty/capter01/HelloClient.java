@@ -23,10 +23,10 @@ public class HelloClient {
                 //3.选择客户端channel实现
                 .channel(NioSocketChannel.class)
                 //4.添加处理器
-                .handler(new ChannelInitializer<SocketChannel>() {
+                .handler(new ChannelInitializer<NioSocketChannel>() {
                     //在连接建立后被调用
                     @Override
-                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                    protected void initChannel(NioSocketChannel socketChannel) throws Exception {
                         socketChannel.pipeline().addLast(new StringEncoder());
                     }
                 })

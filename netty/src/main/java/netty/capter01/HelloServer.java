@@ -1,9 +1,7 @@
 package netty.capter01;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelInitializer;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -11,6 +9,14 @@ import io.netty.handler.codec.string.StringDecoder;
 
 /**
  * 使用netty创建的服务器端
+ *
+ * 按照java nio的概念理解netty流程：
+ * 当使用NioServerSocketChannel接收到客户端的请求之后，就会有一个代表连接的channel对象：NioSocketChannel
+ * 这时候netty对这个NioSocketChannel做了封装，然后调用ChannelInitializer的initChannel方法，
+ * 向这个代表连接通道的Channel的属性中添加了一系列的处理器（handler），然后当使用selector检测到这个channel有事件发生，
+ * 就会逐个调用这个channel处理器中的一个个的handler进行处理
+ *
+ *
  */
 public class HelloServer {
     public static void main(String[] args) {
