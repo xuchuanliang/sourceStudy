@@ -25,7 +25,7 @@ import java.util.List;
  * 5.请求序号，为了双工通信，提供异步能力
  * 6.正文长度
  * 7.消息正文
- *
+ * <p>
  * 注意：必须和LengthFieldBasedFrameDecoder配合使用，确保接收到的ByteBuf是完成的，不需要自行维护状态，保证@Shareable的线程安全性
  */
 public class MessageCodec extends ByteToMessageCodec<Message> {
@@ -34,6 +34,7 @@ public class MessageCodec extends ByteToMessageCodec<Message> {
     /**
      * 按照协议对message进行编码
      * ByteToMessageCodec的encode和decode方法不需要手动调用ctx向下写或者读，会被自动调到
+     *
      * @param ctx
      * @param msg
      * @param out
@@ -42,7 +43,7 @@ public class MessageCodec extends ByteToMessageCodec<Message> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         //1.魔数 4个字节 默认值是0xABCD
-        out.writeBytes(new byte[]{0xA,0xB,0xC,0xD});
+        out.writeBytes(new byte[]{0xA, 0xB, 0xC, 0xD});
         //2.版本号，可以用来支持协议升级，以及不同类型的协议,1个字节
         out.writeByte(1);
         //3.序列化算法，用来对正文进行序列化和反序列化，1个字节,此处使用jdk序列化
@@ -67,6 +68,7 @@ public class MessageCodec extends ByteToMessageCodec<Message> {
     /**
      * 按照协议对ByteBuf解码成Message
      * ByteToMessageCodec的encode和decode方法不需要手动调用ctx向下写或者读，会被自动调到
+     *
      * @param ctx
      * @param in
      * @param out
@@ -90,10 +92,10 @@ public class MessageCodec extends ByteToMessageCodec<Message> {
         int contentLength = in.readInt();
         //7.写入正文
         byte[] content = new byte[contentLength];
-        in.readBytes(content,0,contentLength);
+        in.readBytes(content, 0, contentLength);
         //8.根据序列化类型进行反序列化
         Message message = SerializedHelp.deserialized(serializedType, content);
-        log.debug("magicNum:{},version:{},serializedType:{},messageType:{},sequenceId:{}",magicNum,version,serializedType,messageType,sequenceId);
-        log.debug("message is :{}",message);
+        log.debug("magicNum:{},version:{},serializedType:{},messageType:{},sequenceId:{}", magicNum, version, serializedType, messageType, sequenceId);
+        log.debug("message is :{}", message);
     }
 }
