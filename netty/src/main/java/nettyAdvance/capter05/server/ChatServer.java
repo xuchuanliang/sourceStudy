@@ -11,6 +11,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import nettyAdvance.capter05.protocol.MessageCodecSharable;
+import nettyAdvance.capter05.protocol.ProtocolFrameDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,7 @@ public class ChatServer {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ch.pipeline()
-                                    .addLast(new LengthFieldBasedFrameDecoder(1024, 12, 4, 0, 0))
+                                    .addLast(new ProtocolFrameDecoder())
                                     .addLast(LOGGING_HANDLER)
                                     .addLast(MESSAGE_CODEC);
                         }
