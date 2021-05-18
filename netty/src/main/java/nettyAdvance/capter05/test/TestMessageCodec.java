@@ -1,12 +1,13 @@
 package nettyAdvance.capter05.test;
 
-import chat.message.LoginRequestMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LoggingHandler;
+import nettyAdvance.capter05.message.LoginRequestMessage;
 import nettyAdvance.capter05.protocol.MessageCodec;
+import nettyAdvance.capter05.protocol.MessageCodecSharable;
 
 /**
  * 测试
@@ -16,7 +17,7 @@ public class TestMessageCodec {
         EmbeddedChannel embeddedChannel = new EmbeddedChannel(new LoggingHandler(),
                 //帧解码器
                 new LengthFieldBasedFrameDecoder(1024,12,4,0,0),
-                new MessageCodec());
+                new MessageCodecSharable());
         LoginRequestMessage message = new LoginRequestMessage("xcl", "123456");
         //encode
         embeddedChannel.writeOutbound(message);

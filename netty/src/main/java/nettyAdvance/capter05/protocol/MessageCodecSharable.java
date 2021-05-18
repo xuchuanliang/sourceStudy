@@ -79,9 +79,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         //根据序列化类型，进行反序列化，此处先使用jdk
         ByteArrayInputStream bis = new ByteArrayInputStream(contentBytes);
         ObjectInputStream ois = new ObjectInputStream(bis);
-        chat.message.Message msg = (chat.message.Message) ois.readObject();
-        log.debug("{},{},{},{},{},{}",magic,version,serializeType,commandType,sequenceId,contentLength);
-        log.debug("{}",msg);
+        Message msg = (Message) ois.readObject();
         out.add(msg);
     }
 }
