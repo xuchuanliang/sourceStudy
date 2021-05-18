@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkbt.blobTest.BlobMapper">
+    <select id="getIds" resultType="string">
+        select id from hikpsis_exchange.baoan_filter;
+    </select>
+    <update id="updates" >
+        update hikpsis_exchange.baoan_filter set blob_value= #{val} where id in
+        <foreach collection="ids" close=")" item="i" open="(" separator=",">
+            #{i}
+        </foreach>
+    </update>
+</mapper>

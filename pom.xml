@@ -21,6 +21,7 @@
         <module>spring-mvc</module>
         <module>leetcode</module>
         <module>netty</module>
+        <module>netty-chat</module>
     </modules>
     <packaging>pom</packaging>
 
