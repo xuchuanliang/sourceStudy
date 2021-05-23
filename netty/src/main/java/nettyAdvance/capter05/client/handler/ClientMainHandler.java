@@ -76,6 +76,7 @@ public class ClientMainHandler extends ChannelInboundHandlerAdapter {
                         for(String s:commands[2].split(",")){
                             members.add(s);
                         }
+                        members.add(username);
                         ctx.writeAndFlush(new GroupCreateRequestMessage(commands[1],members));
                         break;
                     case "gmembers":

@@ -24,33 +24,12 @@ public class ChatClient {
 
     public static void main(String[] args) {
         EventLoopGroup worker = new NioEventLoopGroup(5);
-        LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
-        MessageCodecSharable MESSAGE_CODEC = new MessageCodecSharable();
-        ChatResponseMessageHandler CHAT_RESPONSE_HANDLER = new ChatResponseMessageHandler();
-        GroupCreateResponseMessageHandler GROUP_CREATE_RESPONSE_HANDLER = new GroupCreateResponseMessageHandler();
-        GroupChatResponseMessageHandler GROUP_CHAT_RESPONSE_HANDLER = new GroupChatResponseMessageHandler();
-        GroupMemberResponseMessageHandler GROUP_MEMBER_RESPONSE_HANDLER = new GroupMemberResponseMessageHandler();
-        GroupJoinResponseMessageHandler GROUP_JOIN_RESPONSE_HANDLER = new GroupJoinResponseMessageHandler();
         try{
             ChannelFuture channelFuture = new Bootstrap()
                     .group(worker)
                     .channel(NioSocketChannel.class)
-                    .handler(new ChannelInitializer<NioSocketChannel>() {
-                        @Override
-                        protected void initChannel(NioSocketChannel ch) throws Exception {
-                            ch.pipeline()
-                                    .addLast(new ProtocolFrameDecoder())
-//                                    .addLast(LOGGING_HANDLER)
-                                    .addLast(MESSAGE_CODEC)
-                                    .addLast("client handler",new ClientMainHandler())
-                                    .addLast(CHAT_RESPONSE_HANDLER)
-                                    .addLast(GROUP_CREATE_RESPONSE_HANDLER)
-                                    .addLast(GROUP_CHAT_RESPONSE_HANDLER)
-                                    .addLast(GROUP_MEMBER_RESPONSE_HANDLER)
-                                    .addLast(GROUP_JOIN_RESPONSE_HANDLER)
-                            ;
-                        }
-                    }).connect(new InetSocketAddress("127.0.0.1", 8080));
+                    .handler(new ClientChannelInitializer())
+                    .connect(new InetSocketAddress("127.0.0.1", 8080));
             //同步等待建立连接完成
             channelFuture.sync();
             //同步等到连接关闭
