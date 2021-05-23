@@ -1,21 +1,17 @@
 package nettyAdvance.capter05.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import nettyAdvance.capter05.message.LoginRequestMessage;
-import nettyAdvance.capter05.message.LoginResponseMessage;
-import nettyAdvance.capter05.message.Message;
 import nettyAdvance.capter05.protocol.MessageCodecSharable;
 import nettyAdvance.capter05.protocol.ProtocolFrameDecoder;
-import nettyAdvance.capter05.server.handler.ChatRequestMessageHandler;
-import nettyAdvance.capter05.server.handler.LoginRequestMessageHandler;
-import nettyAdvance.capter05.server.service.UserServiceFactory;
-import nettyAdvance.capter05.server.session.SessionFactory;
+import nettyAdvance.capter05.server.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +26,13 @@ public class ChatServer {
         EventLoopGroup worker = new NioEventLoopGroup();
         LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
         MessageCodecSharable MESSAGE_CODEC = new MessageCodecSharable();
-        LoginRequestMessageHandler LOGIN_REQUEST = new LoginRequestMessageHandler();
-        ChatRequestMessageHandler CHAT_REQUEST = new ChatRequestMessageHandler();
+        LoginRequestMessageHandler LOGIN_REQUEST_HANDLER = new LoginRequestMessageHandler();
+        ChatRequestMessageHandler CHAT_REQUEST_HANDLER = new ChatRequestMessageHandler();
+        GroupCreateRequestMessageHandler GROUP_CREATE_REQUEST_HANDLER = new GroupCreateRequestMessageHandler();
+        GroupChatRequestMessageHandler GROUP_CHAT_REQUEST_HANDLER = new GroupChatRequestMessageHandler();
+        GroupMembersRequestMessageHandler GROUP_MEMBERS_REQUEST_HANDLER = new GroupMembersRequestMessageHandler();
+        GroupJoinRequestMessageHandler GROUP_JOIN_REQUEST_HANDLER = new GroupJoinRequestMessageHandler();
+        GroupQuitRequestMessageHandler GROUP_QUIT_REQUEST_HANDLER = new GroupQuitRequestMessageHandler();
         try {
             ChannelFuture channelFuture = new ServerBootstrap()
                     .group(boss, worker)
@@ -41,12 +42,17 @@ public class ChatServer {
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ch.pipeline()
                                     .addLast(new ProtocolFrameDecoder())
-                                    .addLast(LOGGING_HANDLER)
+//                                    .addLast(LOGGING_HANDLER)
                                     .addLast(MESSAGE_CODEC)
                                     //处理登陆请求，由于上方有解码器，到此handler应该就是解码后特定类型的message
                                     //所以使用能够处理特定类型的SimpleChannelInboundHandler处理器
-                                    .addLast(LOGIN_REQUEST)
-                                    .addLast(CHAT_REQUEST)
+                                    .addLast(LOGIN_REQUEST_HANDLER)
+                                    .addLast(CHAT_REQUEST_HANDLER)
+                                    .addLast(GROUP_CREATE_REQUEST_HANDLER)
+                                    .addLast(GROUP_CHAT_REQUEST_HANDLER)
+                                    .addLast(GROUP_MEMBERS_REQUEST_HANDLER)
+                                    .addLast(GROUP_JOIN_REQUEST_HANDLER)
+                                    .addLast(GROUP_QUIT_REQUEST_HANDLER)
                             ;
                         }
                     }).bind(8080);
