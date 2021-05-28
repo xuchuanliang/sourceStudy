@@ -6,6 +6,9 @@
     <select id="getIds" resultType="string">
         select id from hikpsis_exchange.baoan_filter;
     </select>
+    <select id="getInfo" resultType="com.hkbt.blobTest.BaoanVo">
+        select * from hikpsis_exchange.baoan_filter where tb_name like concat('%',#{name},'%');
+    </select>
     <update id="updates" >
         update hikpsis_exchange.baoan_filter set blob_value= #{val} where id in
         <foreach collection="ids" close=")" item="i" open="(" separator=",">
