@@ -9,5 +9,5 @@ public interface BlobMapper {
 
     void updates(List<String> ids);
 
-    List<BaoanVo> getInfo(String name);
+    List<BaoanVo> getInfo(@Param("name") String name,@Param("syncStatus") Integer syncStatus);
 }

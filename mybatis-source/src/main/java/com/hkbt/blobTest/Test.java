@@ -26,7 +26,7 @@ public class Test {
         SqlSessionFactory sessionFactory = sqlSessionFactoryBuilder.build(Resources.getResourceAsStream("mybatis-config.xml"));
         SqlSession sqlSession = sessionFactory.openSession();
         BlobMapper blobMapper = sqlSession.getMapper(BlobMapper.class);
-        List<BaoanVo> hikpsis = blobMapper.getInfo("hikpsis");
+        List<BaoanVo> hikpsis = blobMapper.getInfo("hikpsis",2);
         System.out.println(hikpsis);
     }
 }
