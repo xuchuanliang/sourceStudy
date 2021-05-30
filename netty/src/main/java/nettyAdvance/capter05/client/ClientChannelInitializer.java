@@ -29,12 +29,12 @@ public class ClientChannelInitializer extends ChannelInitializer<NioSocketChanne
     protected void initChannel(NioSocketChannel ch) throws Exception {
         ch.pipeline()
                 .addLast(new ProtocolFrameDecoder())
-//              .addLast(LOGGING_HANDLER)
+              .addLast(LOGGING_HANDLER)
                 //空闲检测的处理器，具体使用方法和参数可以查看javadoc文档，分别表示检测某个channel多长时间未读取到数据/没向它写出数据/没有发生读写数据，然后会以事件的方式调用：ChannelDuplexHandler
                 .addLast(new IdleStateHandler(ClientIdleHandler.READER_IDLE_TIME,ClientIdleHandler.WRITE_IDLE_TIME,ClientIdleHandler.ALL_IDLE_TIME))
                 .addLast(MESSAGE_CODEC)
-                .addLast(new ClientIdleHandler())
                 .addLast("client handler",new ClientMainHandler())
+                .addLast(new ClientIdleHandler())
                 .addLast(CHAT_RESPONSE_HANDLER)
                 .addLast(GROUP_CREATE_RESPONSE_HANDLER)
                 .addLast(GROUP_CHAT_RESPONSE_HANDLER)

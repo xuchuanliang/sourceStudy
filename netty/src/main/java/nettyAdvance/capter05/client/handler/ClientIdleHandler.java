@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import nettyAdvance.capter05.message.LoginRequestMessage;
 import nettyAdvance.capter05.message.PingMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,9 @@ public class ClientIdleHandler extends ChannelDuplexHandler {
         if(evt instanceof IdleStateEvent){
             IdleStateEvent i = (IdleStateEvent) evt;
             if(i.state() == IdleState.WRITER_IDLE){
-                log.error("已经{}秒没有向服务器写内容了，开始写ping包");
+                log.error("已经{}秒没有向服务器写内容了，开始写ping包",WRITE_IDLE_TIME);
                 ctx.writeAndFlush(new PingMessage());
+//                ctx.channel().writeAndFlush(new LoginRequestMessage());
             }
         }
     }

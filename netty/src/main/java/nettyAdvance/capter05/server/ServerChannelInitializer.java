@@ -32,7 +32,7 @@ public class ServerChannelInitializer extends ChannelInitializer<NioSocketChanne
     protected void initChannel(NioSocketChannel ch) throws Exception {
         ch.pipeline()
                 .addLast(new ProtocolFrameDecoder())
-//                .addLast(LOGGING_HANDLER)
+                .addLast(LOGGING_HANDLER)
                 .addLast(MESSAGE_CODEC)
                 //空闲检测的处理器，具体使用方法和参数可以查看javadoc文档，分别表示检测某个channel多长时间未读取到数据/没向它写出数据/没有发生读写数据，然后会以事件的方式调用：ChannelDuplexHandler
                 .addLast(new IdleStateHandler(ServerIdleHandler.READER_IDLE_TIME,ServerIdleHandler.WRITE_IDLE_TIME,ServerIdleHandler.ALL_IDLE_TIME))

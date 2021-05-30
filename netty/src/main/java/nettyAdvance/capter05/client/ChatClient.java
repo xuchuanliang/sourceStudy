@@ -9,6 +9,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import nettyAdvance.capter05.client.handler.*;
+import nettyAdvance.capter05.config.Config;
 import nettyAdvance.capter05.protocol.MessageCodecSharable;
 import nettyAdvance.capter05.protocol.ProtocolFrameDecoder;
 import org.slf4j.Logger;

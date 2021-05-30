@@ -4,14 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import nettyAdvance.capter05.config.Config;
 import nettyAdvance.capter05.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 
 /**
@@ -38,7 +35,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         //2.一个字节的版本号
         out.writeByte(1);
         //3.一个字节的序列化算法：暂定0表示jdk，1表示json
-        out.writeByte(0);
+        out.writeByte(Config.getSerializerAlgorithm().ordinal());
         //4.一个字节的指令类型
         out.writeByte(msg.getMessageType());
         //5.四个字节的请求序号
@@ -46,10 +43,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         //6.为了凑够2的次幂，增加一个填充位
         out.writeByte(0xff);
         //7.将消息使用jdk序列化方式转成字节数组
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(msg);
-        byte[] msgBytes = bos.toByteArray();
+        byte[] msgBytes = Config.getSerializerAlgorithm().serialize(msg);
         //8.四个字节的内容长度
         out.writeInt(msgBytes.length);
         //9.写入正文
@@ -77,9 +71,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         byte[] contentBytes = new byte[contentLength];
         in.readBytes(contentBytes);
         //根据序列化类型，进行反序列化，此处先使用jdk
-        ByteArrayInputStream bis = new ByteArrayInputStream(contentBytes);
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        Message msg = (Message) ois.readObject();
+        Message msg = Serializer.Algorithm.values()[serializeType].deserialize(Message.getMessageClass(commandType),contentBytes);
 //        log.error("message is :{}",msg);
         out.add(msg);
     }

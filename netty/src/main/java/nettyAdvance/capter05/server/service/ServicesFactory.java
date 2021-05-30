@@ -15,7 +15,7 @@ public class ServicesFactory {
     static Map<Class<?>, Object> map = new ConcurrentHashMap<>();
 
     static {
-        try (InputStream in = Config.class.getResourceAsStream("/application.properties")) {
+        try (InputStream in = Config.class.getResourceAsStream("/bootstrap.properties")) {
             properties = new Properties();
             properties.load(in);
             Set<String> names = properties.stringPropertyNames();

@@ -30,7 +30,7 @@ public class ServerIdleHandler extends ChannelDuplexHandler {
         if(evt instanceof IdleStateEvent){
             IdleStateEvent i = (IdleStateEvent) evt;
             if(i.state()== IdleState.READER_IDLE){
-                log.error("channel:{}，已经{}秒没有向我发送数据了，考虑关闭或者发送ping包",ctx.channel(),READER_IDLE_TIME);
+//                log.error("channel:{}，已经{}秒没有向我发送数据了，考虑关闭或者发送ping包",ctx.channel(),READER_IDLE_TIME);
             }
         }
     }
