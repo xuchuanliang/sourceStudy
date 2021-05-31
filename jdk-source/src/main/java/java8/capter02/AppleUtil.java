@@ -65,5 +65,22 @@ public class AppleUtil {
         return result;
     }
 
+    /**
+     * 通用的过滤功能
+     * @param list
+     * @param predicate
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> filter(List<T> list,Predicate<T> predicate){
+        List<T> result = new ArrayList<>();
+        for(T t:list){
+            if(predicate.test(t)){
+                result.add(t);
+            }
+        }
+        return result;
+    }
+
 
 }
