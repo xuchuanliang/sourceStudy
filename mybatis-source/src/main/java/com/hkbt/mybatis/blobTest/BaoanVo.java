@@ -1,4 +1,4 @@
-package com.hkbt.blobTest;
+package com.hkbt.mybatis.blobTest;
 
 public class BaoanVo {
     private String id;

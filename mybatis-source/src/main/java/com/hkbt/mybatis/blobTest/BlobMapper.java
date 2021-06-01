@@ -1,4 +1,4 @@
-package com.hkbt.blobTest;
+package com.hkbt.mybatis.blobTest;
 
 import org.apache.ibatis.annotations.Param;
 

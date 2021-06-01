@@ -1,4 +1,4 @@
-package com.hkbt.blobTest;
+package com.hkbt.mybatis.blobTest;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

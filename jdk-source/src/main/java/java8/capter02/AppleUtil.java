@@ -65,6 +65,10 @@ public class AppleUtil {
         return result;
     }
 
+    public static void main(String[] args) {
+
+    }
+
     /**
      * 通用的过滤功能
      * @param list

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hkbt.BlogMapper">
-    <select id="selectBlog" resultType="com.hkbt.Blog">
+<mapper namespace="com.hkbt.mybatis.BlogMapper">
+    <select id="selectBlog" resultType="com.hkbt.mybatis.Blog">
     select * from blog where id = #{id}
   </select>
 
@@ -11,7 +11,7 @@
         INSERT INTO `mybatis_source`.`blog` ( `name`) VALUES (#{name});
     </insert>
 
-    <select id="findAll" resultType="com.hkbt.Blog">
+    <select id="findAll" resultType="com.hkbt.mybatis.Blog">
         select * from blog;
     </select>
 </mapper>

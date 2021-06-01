@@ -1,4 +1,4 @@
-package com.hkbt;
+package com.hkbt.mybatis;
 
 import org.apache.ibatis.annotations.Param;
 

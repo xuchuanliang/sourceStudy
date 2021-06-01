@@ -6,7 +6,7 @@ package java8.capter02;
 public class Apple {
     private String color;
 
-    private int weight;
+    private Integer weight;
 
     public String getColor() {
         return color;
@@ -16,11 +16,11 @@ public class Apple {
         this.color = color;
     }
 
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 }

@@ -1,4 +1,4 @@
-package com.hkbt;
+package com.hkbt.mybatis;
 
 public class Blog {
     private Integer id;

@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hkbt.blobTest.BlobMapper">
+<mapper namespace="com.hkbt.mybatis.blobTest.BlobMapper">
     <select id="getIds" resultType="string">
         select id from hikpsis_exchange.baoan_filter;
     </select>
-    <select id="getInfo" resultType="com.hkbt.blobTest.BaoanVo">
+    <select id="getInfo" resultType="com.hkbt.mybatis.blobTest.BaoanVo">
         select * from hikpsis_exchange.baoan_filter where tb_name like concat('%',#{name},'%') and sync_status=#{syncStatus};
     </select>
     <update id="updates" >
