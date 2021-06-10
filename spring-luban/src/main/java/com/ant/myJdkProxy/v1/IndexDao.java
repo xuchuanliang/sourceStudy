@@ -1,4 +1,4 @@
-package com.ant.myJdkProxy.v1;
+package com.test1.ant.myJdkProxy.v1;
 
 /**
  * 接口，模拟有无返回值、有无参数多种情况方法

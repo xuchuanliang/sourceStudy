@@ -1,6 +1,6 @@
-package com.ant.myJdkProxy.v2;
+package com.test1.ant.myJdkProxy.v2;
 
-import com.ant.myJdkProxy.jdk.JdkInvocationHandler;
+import com.test1.ant.myJdkProxy.jdk.JdkInvocationHandler;
 
 import java.lang.reflect.Proxy;
 

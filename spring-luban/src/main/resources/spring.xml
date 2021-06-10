@@ -7,12 +7,12 @@
        default-autowire="byName">
     <context:annotation-config></context:annotation-config>
 
-<!--    <bean class="com.ant.test1.IndexDaoImpl" id="indexDao"></bean>-->
+<!--    <bean class="com.test1.ant.test1.IndexDaoImpl" id="indexDao"></bean>-->
 
-<!--    <bean class="com.ant.test1.IndexDaoImpl1" id="ant"></bean>-->
+<!--    <bean class="com.test1.ant.test1.IndexDaoImpl1" id="ant"></bean>-->
 
-<!--    <bean class="com.ant.test1.IndexService" id="indexService"></bean>-->
+<!--    <bean class="com.test1.ant.test1.IndexService" id="indexService"></bean>-->
 
-<!--    <bean class="com.ant.lifeCallback.LifeServiceImpl" id="lifeService"></bean>-->
+<!--    <bean class="com.test1.ant.lifeCallback.LifeServiceImpl" id="lifeService"></bean>-->
 
 </beans>

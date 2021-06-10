@@ -1,1 +1,1 @@
-com.ant.spi.SpiTest=com.ant.spi.SpiTestImpl1,com.ant.spi.SpiTestImpl2
+com.test1.ant.spi.SpiTest=com.test1.ant.spi.SpiTestImpl1,com.test1.ant.spi.SpiTestImpl2

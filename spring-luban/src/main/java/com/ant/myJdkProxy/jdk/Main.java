@@ -1,7 +1,7 @@
-package com.ant.myJdkProxy.jdk;
+package com.test1.ant.myJdkProxy.jdk;
 
-import com.ant.myJdkProxy.v2.IndexDao;
-import com.ant.myJdkProxy.v2.IndexDaoImpl;
+import com.test1.ant.myJdkProxy.v2.IndexDao;
+import com.test1.ant.myJdkProxy.v2.IndexDaoImpl;
 
 import java.lang.reflect.Proxy;
 

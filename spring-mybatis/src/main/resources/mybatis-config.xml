@@ -15,6 +15,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper class="com.ant.IndexMapper"></mapper>
+        <mapper class="com.test1.ant.IndexMapper"></mapper>
     </mappers>
 </configuration>

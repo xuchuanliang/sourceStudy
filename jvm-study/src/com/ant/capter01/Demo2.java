@@ -1,4 +1,4 @@
-package com.ant.capter01;
+package com.test1.ant.capter01;
 
 /**
  * 方法的局部变量是否是线程安全的

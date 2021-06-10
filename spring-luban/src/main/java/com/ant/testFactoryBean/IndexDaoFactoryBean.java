@@ -1,11 +1,11 @@
-package com.ant.testFactoryBean;
+package com.test1.ant.testFactoryBean;
 
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@ComponentScan("com.ant.testFactoryBean")
+@ComponentScan("com.test1.ant.testFactoryBean")
 @Configuration
 @Component("&")
 public class IndexDaoFactoryBean implements FactoryBean<IndexDao> {

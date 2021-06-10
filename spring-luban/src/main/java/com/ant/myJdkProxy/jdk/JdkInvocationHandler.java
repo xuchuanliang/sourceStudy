@@ -1,6 +1,6 @@
-package com.ant.myJdkProxy.jdk;
+package com.test1.ant.myJdkProxy.jdk;
 
-import com.ant.myJdkProxy.v2.IndexDao;
+import com.test1.ant.myJdkProxy.v2.IndexDao;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

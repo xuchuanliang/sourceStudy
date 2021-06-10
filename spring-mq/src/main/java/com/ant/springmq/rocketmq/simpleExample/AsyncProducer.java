@@ -1,4 +1,4 @@
-package com.ant.springmq.rocketmq.simpleExample;
+package com.test1.ant.springmq.rocketmq.simpleExample;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;

@@ -1,4 +1,4 @@
-package com.ant.test5;
+package com.test1.ant.test5;
 
 import org.springframework.context.annotation.Import;
 

@@ -1,4 +1,4 @@
-package com.ant.springmq.rocketmq.otherMachine;
+package com.test1.ant.springmq.rocketmq.otherMachine;
 
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;

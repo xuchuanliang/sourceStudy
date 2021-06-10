@@ -1,4 +1,4 @@
-package com.ant.test3;
+package com.test1.ant.test3;
 
 public class UserServiceImpl implements UserService{
     private OrgService orgService;

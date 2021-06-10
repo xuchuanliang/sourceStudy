@@ -1,4 +1,4 @@
-package com.ant.test2;
+package com.test1.ant.test2;
 
 public interface MyService1 {
 }

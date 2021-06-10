@@ -1,6 +1,6 @@
-package com.ant.lifeCallback;
+package com.test1.ant.lifeCallback;
 
-import com.ant.P;
+import com.test1.ant.P;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
