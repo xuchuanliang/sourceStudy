@@ -1,4 +1,4 @@
-package com.ant.myJdkProxy.v2;
+package com.test1.ant.myJdkProxy.v2;
 
 /**
  * 接口实现类

@@ -1,4 +1,4 @@
-package com.ant.test3;
+package com.test1.ant.test3;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

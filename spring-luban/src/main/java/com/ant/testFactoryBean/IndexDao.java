@@ -1,4 +1,4 @@
-package com.ant.testFactoryBean;
+package com.test1.ant.testFactoryBean;
 
 public class IndexDao {
     public IndexDao(){

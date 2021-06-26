@@ -1,4 +1,4 @@
-package com.ant.beanLife;
+package com.test1.ant.beanLife;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;

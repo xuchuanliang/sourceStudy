@@ -1,4 +1,4 @@
-package com.ant.springmq.rocketmq.tagExample;
+package com.test1.ant.springmq.rocketmq.tagExample;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;

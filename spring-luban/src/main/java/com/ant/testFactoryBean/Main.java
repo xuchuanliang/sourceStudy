@@ -1,4 +1,4 @@
-package com.ant.testFactoryBean;
+package com.test1.ant.testFactoryBean;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

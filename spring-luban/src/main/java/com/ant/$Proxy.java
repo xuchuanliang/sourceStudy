@@ -1,10 +1,10 @@
-//package com.ant;
+//package com.test1.ant;
 //
-//public class $Proxy implements com.ant.myJdkProxy.v2.IndexDao {
-//    private com.ant.myJdkProxy.v2.IndexDaoImpl target;
-//    private com.ant.myJdkProxy.v2.IndexInvocationHandler invocationHandler;
+//public class $Proxy implements com.test1.ant.myJdkProxy.v2.IndexDao {
+//    private com.test1.ant.myJdkProxy.v2.IndexDaoImpl target;
+//    private com.test1.ant.myJdkProxy.v2.IndexInvocationHandler invocationHandler;
 //
-//    public $Proxy(com.ant.myJdkProxy.v2.IndexDaoImpl target, com.ant.myJdkProxy.v2.IndexInvocationHandler invocationHandler) {
+//    public $Proxy(com.test1.ant.myJdkProxy.v2.IndexDaoImpl target, com.test1.ant.myJdkProxy.v2.IndexInvocationHandler invocationHandler) {
 //        this.target = target;
 //        this.invocationHandler = invocationHandler;
 //    }

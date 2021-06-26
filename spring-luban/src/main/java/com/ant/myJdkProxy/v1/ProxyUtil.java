@@ -1,4 +1,4 @@
-package com.ant.myJdkProxy.v1;
+package com.test1.ant.myJdkProxy.v1;
 
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
@@ -50,7 +50,7 @@ public class ProxyUtil {
 
     /**
      * 生成源代码字符串
-     * package com.ant
+     * package com.test1.ant
      * public class $Proxy implement interface{
      *     private Object target;
      *
@@ -74,7 +74,7 @@ public class ProxyUtil {
         String tab = "\t";
         StringBuilder sb = new StringBuilder();
         sb
-                .append("package com.ant;")
+                .append("package com.test1.ant;")
                 .append(line)
                 .append("public class $Proxy implements ").append(interfc.getName()).append(" {")
                 .append(line)
@@ -168,7 +168,7 @@ public class ProxyUtil {
     private static Class loadClass() throws MalformedURLException, ClassNotFoundException {
         URL[] urls = new URL[]{new URL("file:D:\\\\")};
         URLClassLoader urlClassLoader = new URLClassLoader(urls);
-        Class<?> clazz = urlClassLoader.loadClass("com.ant.$Proxy");
+        Class<?> clazz = urlClassLoader.loadClass("com.test1.ant.$Proxy");
         return clazz;
     }
 }

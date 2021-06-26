@@ -1,6 +1,6 @@
-package com.ant.proxy.implement;
+package com.test1.ant.proxy.implement;
 
-import com.ant.proxy.target.UserDao;
+import com.test1.ant.proxy.target.UserDao;
 
 /**
  * 通过聚合实现代理：即通过实现相同的接口，并且持有目标对象的一个引用，达到代理的作用

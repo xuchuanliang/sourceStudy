@@ -1,8 +1,8 @@
-package com.ant.proxy;
+package com.test1.ant.proxy;
 
-import com.ant.proxy.extend.UserLogDaoImpl;
-import com.ant.proxy.target.UserDao;
-import com.ant.proxy.target.UserDaoImpl;
+import com.test1.ant.proxy.extend.UserLogDaoImpl;
+import com.test1.ant.proxy.target.UserDao;
+import com.test1.ant.proxy.target.UserDaoImpl;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,7 +11,7 @@ public class Main {
         userDao.query();
         //通过聚合实现代理
         UserDao target = new UserDaoImpl();
-        UserDao proxy = new com.ant.proxy.implement.UserLogDaoImpl(target);
+        UserDao proxy = new com.test1.ant.proxy.implement.UserLogDaoImpl(target);
         proxy.query();
     }
 }

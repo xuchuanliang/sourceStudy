@@ -1,4 +1,4 @@
-package com.ant.spi;
+package com.test1.ant.spi;
 
 public class SpiTestImpl2 implements SpiTest{
     @Override

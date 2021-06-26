@@ -5,7 +5,7 @@
   <packaging>war</packaging>
 
   <name>spring-mvc</name>
-  <groupId>com.ant</groupId>
+  <groupId>com.test1.ant</groupId>
   <artifactId>spring-mvc</artifactId>
   <version>1.0-SNAPSHOT</version>
 

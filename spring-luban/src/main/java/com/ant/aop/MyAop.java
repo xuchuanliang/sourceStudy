@@ -1,4 +1,4 @@
-package com.ant.aop;
+package com.test1.ant.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,25 +14,25 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @Aspect()
-//@Aspect("perthis(this(com.ant.aop.MyServiceInterface))")
+//@Aspect("perthis(this(com.test1.ant.aop.MyServiceInterface))")
 public class MyAop {
 
     /**
      * 定义pointCut（切入点）：即连接点的集合
      */
-    @Pointcut("execution(* com.ant.aop.*.*(..))")
+    @Pointcut("execution(* com.test1.ant.aop.*.*(..))")
     public void jointPointExecution(){}
 
-    @Pointcut("within(com.ant.aop.*)")
+    @Pointcut("within(com.test1.ant.aop.*)")
     public void jointPointWithin(){}
 
     @Pointcut("args(java.lang.String)")
     public void jointPointArgs(){}
 
-    @Pointcut("this(com.ant.aop.MyService)")
+    @Pointcut("this(com.test1.ant.aop.MyService)")
     public void jointPointThis(){}
 
-    @Pointcut("target(com.ant.aop.MyService)")
+    @Pointcut("target(com.test1.ant.aop.MyService)")
     public void jointPointTarget(){}
 
 

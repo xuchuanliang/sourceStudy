@@ -1,4 +1,4 @@
-package com.ant.test4;
+package com.test1.ant.test4;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

@@ -1,4 +1,4 @@
-package com.ant.springmq;
+package com.test1.ant.springmq;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

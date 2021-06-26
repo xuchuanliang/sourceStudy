@@ -1,4 +1,4 @@
-package com.ant.lifeCallback;
+package com.test1.ant.lifeCallback;
 
 public interface LifeService {
 

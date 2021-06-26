@@ -1,6 +1,6 @@
-package com.ant.proxy.extend;
+package com.test1.ant.proxy.extend;
 
-import com.ant.proxy.target.UserDaoImpl;
+import com.test1.ant.proxy.target.UserDaoImpl;
 
 /**
  * 通过继承实现代理
