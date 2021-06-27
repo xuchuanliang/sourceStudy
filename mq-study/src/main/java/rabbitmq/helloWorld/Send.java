@@ -3,6 +3,7 @@ package rabbitmq.helloWorld;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import rabbitmq.Constant;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +11,8 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static rabbitmq.Constant.QUEUE_NAME;
 
 /**
  * rabbitmq 生产者
@@ -19,13 +22,12 @@ import java.util.concurrent.TimeoutException;
  */
 public class Send {
     private static final int threadNum = 80;
-    private static final String QUEUE_NAME = "hello";
     private final static CountDownLatch countDownLatch = new CountDownLatch(threadNum);
 
     public static void main(String[] args) {
         //连接工厂
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("192.168.109.139");
+        connectionFactory.setHost(Constant.HOST);
         //创建连接：线程安全
         try(Connection connection = connectionFactory.newConnection()){
             for(int i=0;i<threadNum;i++){
