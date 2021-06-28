@@ -2,6 +2,7 @@ package rabbitmq.workQueues;
 
 public interface readMe {
     /*
+    第二章：work queue
       消费者:多个消费者，rabbitmq会依次将消息发送给消费者
       ack相关（保证消息不丢失）：
           为了确保rabbitmq不会丢失消息，提供了message acknowledgments机制，

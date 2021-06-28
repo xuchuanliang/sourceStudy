@@ -8,4 +8,7 @@ public interface Constant {
 
     //虚拟机地址
     String HOST = "192.168.109.139";
+
+    //日志分发的exchange
+    String LOGS_EXCHANGE = "logs";
 }
