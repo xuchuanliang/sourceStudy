@@ -11,4 +11,7 @@ public interface Constant {
 
     //日志分发的exchange
     String LOGS_EXCHANGE = "logs";
+
+    //使用direct类型的exchange，使用routing订阅感兴趣的日志
+    String LOGS2_EXCHANGE = "logs2";
 }
