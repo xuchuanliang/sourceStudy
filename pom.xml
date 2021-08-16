@@ -15,20 +15,14 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>mybatis-source</module>
-        <module>spring-source</module>
         <module>jdk-source</module>
-        <module>zookeeper-source</module>
-        <module>spring-luban</module>
-        <module>spring-website</module>
-        <module>spring-log</module>
-        <module>spring-mybatis</module>
         <module>java-concurrent</module>
-        <module>springboot-web</module>
-        <module>spring-mvc</module>
         <module>leetcode</module>
         <module>netty</module>
         <module>netty-chat</module>
         <module>mq</module>
+        <module>spring</module>
+        <module>zookeeper-source</module>
     </modules>
     <packaging>pom</packaging>
 
