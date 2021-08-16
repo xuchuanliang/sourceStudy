@@ -23,6 +23,7 @@
         <module>mq</module>
         <module>spring</module>
         <module>zookeeper-source</module>
+        <module>spring-cloud</module>
     </modules>
     <packaging>pom</packaging>
 
