@@ -51,7 +51,10 @@ public class Test1 {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new LoggingHandler(LogLevel.INFO));
+//                            p.addLast(new LoggingHandler(LogLevel.INFO));
+                            p.addLast(new ChannelHandler1());
+                            p.addLast(new ChannelHandler2());
+
                         }
                     });
             ChannelFuture channelFuture = b.bind(8080).sync();
