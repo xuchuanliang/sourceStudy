@@ -9,6 +9,8 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 模拟消息堆压服务端
  */
@@ -29,7 +31,8 @@ public class Server {
                     ch.pipeline().addLast(new ChannelInboundHandlerAdapter(){
                         @Override
                         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                            System.out.println("debugging");
+                            System.out.println(msg);
+                            TimeUnit.MICROSECONDS.sleep(10);
                             //保证msg被正确释放，要么手动释放，要么交给netty释放
                             ctx.fireChannelRead(msg);
                         }

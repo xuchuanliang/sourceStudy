@@ -4,12 +4,19 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 基于池化和非池化的方式测试性能
  */
 public class PoolTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(30);
+        System.out.println("start....unpooled");
+        unPooled();
+        System.out.println("start....pooled");
         pooled();
+        System.out.println("enddd");
 
     }
 
