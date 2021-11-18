@@ -15,7 +15,8 @@
         </environment>
     </environments>
     <mappers >
-        <mapper  resource="BlogMapper.xml"/>
+<!--        <mapper  resource="BlogMapper.xml"/>-->
         <mapper resource="BlobMapper.xml"/>
+        <mapper resource="TestMapper.xml"></mapper>
     </mappers>
 </configuration>

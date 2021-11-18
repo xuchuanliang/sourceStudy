@@ -3,6 +3,7 @@ package com.hkbt.mybatis;
 public class Blog {
     private Integer id;
     private String name;
+    private long time;
 
     public Integer getId() {
         return id;
@@ -18,6 +19,14 @@ public class Blog {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     @Override
