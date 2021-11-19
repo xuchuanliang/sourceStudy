@@ -1,7 +1,5 @@
 package com.ant.capter01;
 
-import sun.misc.Unsafe;
-
 /**
  * -Xmx10m -XX:+PrintStringTableStatistics -XX:+PrintGCDetails -verbose:gc
  */

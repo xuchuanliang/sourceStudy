@@ -24,6 +24,7 @@
         <module>spring</module>
         <module>zookeeper-source</module>
         <module>spring-cloud</module>
+        <module>mavenStudy</module>
     </modules>
     <packaging>pom</packaging>
 
