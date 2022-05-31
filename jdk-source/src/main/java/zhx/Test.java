@@ -3,10 +3,14 @@ package zhx;
 import cn.hutool.core.util.RandomUtil;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Test {
-    public static void main(String[] args) {
-        genLanguage();
+    public static void main(String[] args) throws InterruptedException {
+//        genLanguage();
+//        intern();
+//        System.out.println(option(null));
+        testLock();
     }
 
     /**
@@ -35,5 +39,36 @@ public class Test {
 
     private static int index(List<String> dest) {
         return RandomUtil.randomInt(0, dest.size());
+    }
+
+    private static void intern(){
+        String s = new String("abc");
+        String b = new String("abc");
+        System.out.println(s == b);
+        System.out.println(s.intern() == b.intern());
+    }
+
+    private static User option(Object user){
+        return (User) Optional.ofNullable(user).orElse(null);
+    }
+
+    static class User{
+        String id;
+    }
+
+    private static void testLock() throws InterruptedException {
+        String a = new String("abc");
+        String b = new String("abc");
+        System.out.println(a==b);
+        synchronized (new String(a)){
+            System.out.println("a inner");
+            TimeUnit.SECONDS.sleep(3);
+            System.out.println("a out");
+        }
+        synchronized (new String(b)){
+            System.out.println("b inner");
+            TimeUnit.SECONDS.sleep(3);
+            System.out.println("b out");
+        }
     }
 }
