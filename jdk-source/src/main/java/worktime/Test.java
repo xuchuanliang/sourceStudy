@@ -10,20 +10,18 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Test {
-    private static List<String> exclude = Arrays.asList("徐传良", "何澄钟", "黄立琼", "孙富鑫", "林志亮", "林寿露");
+//    private static List<String> exclude = Arrays.asList("徐传良", "何澄钟", "黄立琼", "孙富鑫", "林志亮", "林寿露");
+    private static List<String> exclude = Collections.EMPTY_LIST;
 
     public static void main(String[] args) throws IOException {
         List<Person> objects = EasyExcel.read("C:\\Users\\xuchuanliangbt\\Desktop\\杭州富阳海康保泰安防技术服务有限公司_考勤报表_20220501-20220531.xlsx").head(Person.class).doReadAllSync();
         calculate(objects);
         Map<String, List<Person>> listMap = objects.stream().filter(p -> StrUtil.isNotEmpty(p.getEndTime())).collect(Collectors.groupingBy(Person::getName));
-        writeToTxt(listMap);
+//        writeToTxt(listMap);
         writeToExcel(objects);
     }
 
@@ -100,11 +98,24 @@ public class Test {
     /**
      * 写到excel中
      *
-     * @param listMap
+     * @param list
      */
-    private static void writeToExcel(List<Person> listMap) {
-        List<Person> collect = listMap.stream().filter(p -> !exclude.contains(p.getName())).filter(p -> p.getDuration() != 0).collect(Collectors.toList());
+    private static void writeToExcel(List<Person> list) {
+        List<Person> collect = list.stream().filter(p -> !exclude.contains(p.getName())).filter(p -> p.getDuration() != 0).collect(Collectors.toList());
         String fileName = "C:\\Users\\xuchuanliangbt\\Desktop\\" + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + "_detail.xlsx";
         EasyExcel.write(fileName, Person.class).sheet("数据").doWrite(collect);
+
+        Map<String, List<Person>> listMap = list.stream().filter(p -> StrUtil.isNotEmpty(p.getEndTime())).collect(Collectors.groupingBy(Person::getName));
+        List<PersonTotal> personTotals = new ArrayList<>();
+        listMap.entrySet().forEach(e->{
+            PersonTotal p = new PersonTotal();
+            p.setName(e.getKey());
+            p.setDay(e.getValue().size());
+            p.setTotalDuration(e.getValue().stream().mapToInt(Person::getDuration).sum());
+            p.setTotalDurationHour(NumberUtil.div(p.getTotalDuration(),60,2));
+            personTotals.add(p);
+        });
+        fileName = "C:\\Users\\xuchuanliangbt\\Desktop\\" + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + "_total.xlsx";
+        EasyExcel.write(fileName, PersonTotal.class).sheet("数据").doWrite(personTotals);
     }
 }
