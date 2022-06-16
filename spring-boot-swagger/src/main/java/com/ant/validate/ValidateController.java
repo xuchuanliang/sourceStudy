@@ -65,4 +65,10 @@ public class ValidateController{
         System.out.println(val);
         return true;
     }
+
+    @PostMapping("/test10")
+    public boolean test10(@Validated @RequestBody Page page){
+        System.out.println(page.getData());
+        return true;
+    }
 }

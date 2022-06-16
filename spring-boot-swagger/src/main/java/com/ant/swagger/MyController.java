@@ -1,11 +1,10 @@
 package com.ant.swagger;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Api(tags = "我的模块")
@@ -29,9 +28,21 @@ public class MyController {
         return new AjaxResult<List<String>>();
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "str",value = "字符串1",required = true,defaultValue = "NULL"),
+            @ApiImplicitParam(name = "str2",value = "字符串2"),
+    })
     @ApiOperation(value = "获取用户对象-V1.0-新增",notes = "什么模块什么功能使用")
     @PostMapping("/getStrObj")
-    public AjaxResult<User> getStrObj(@RequestBody User user){
+    public AjaxResult<User> getStrObj(@RequestParam(value = "str",defaultValue = "张三") String str1,String str2,@RequestBody User user){
         return new AjaxResult<>();
+    }
+
+    @ApiOperation("fdsaf")
+    @PostMapping("/test")
+    @ApiImplicitParam(value = "name")
+    public User test1(@ApiParam(value = "ssss",required = true)Long name){
+        System.out.println(name);
+        return null;
     }
 }

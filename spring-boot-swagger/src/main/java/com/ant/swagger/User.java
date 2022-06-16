@@ -13,4 +13,6 @@ public class User extends ParentUser{
     private String gender;
     @ApiModelProperty("地址")
     private String address;
+    @ApiModelProperty("孩子")
+    private User child;
 }
